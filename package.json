@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "test": "vitest run",
+    "test": "vitest run && npm run test:contracts",
+    "test:contracts": "node --test tests/*.test.mjs",
     "test:visual": "playwright test",
     "verify:offline": "node scripts/verify-offline.mjs",
     "check": "npm run test && npm run build && npm run verify:offline",
