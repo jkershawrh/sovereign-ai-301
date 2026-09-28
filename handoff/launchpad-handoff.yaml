@@ -72,8 +72,8 @@ proposed_launchpad_intake:
     shared_blueprint: red-hat-intel-sovereign-ai-v1
     solution_family: sovereign_ai
   sources:
-    showroom: {repo_url: https://github.com/jkershawrh/sovereign-ai-301, revision: d46625e8e1eb89e35c0a93385a47564d825a8115, playbook: showroom/default-site.yml, start_path: showroom/content}
-    workload: {repo_url: https://github.com/jkershawrh/sovereign-ai-301, revision: d46625e8e1eb89e35c0a93385a47564d825a8115, deploy_path: charts/sovereign-ai-301}
+    showroom: {repo_url: "https://github.com/jkershawrh/sovereign-ai-301", revision: d46625e8e1eb89e35c0a93385a47564d825a8115, playbook: showroom/default-site.yml, start_path: showroom/content}
+    workload: {repo_url: "https://github.com/jkershawrh/sovereign-ai-301", revision: d46625e8e1eb89e35c0a93385a47564d825a8115, deploy_path: charts/sovereign-ai-301}
   runtime:
     deployment_type: helm
     deployment_class: shared_namespace
