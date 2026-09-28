@@ -23,7 +23,7 @@ for (const [scenario, [decision, sourceState]] of Object.entries(expected)) {
     assert.equal(result.keyMaterialReleased, false)
     assert.equal(result.modelInvoked, false)
     assert.equal(result.performanceClaim, null)
-    assert.equal('secret' in JSON.stringify(result).toLowerCase() && JSON.stringify(result).includes('fixture-value'), false)
+    assert.equal(JSON.stringify(result).includes('fixture-value'), false)
   })
 }
 

@@ -1,8 +1,8 @@
 {
   "data": {
-    "latency": 612,
-    "throughput": 42,
-    "outcome": "Validated on enterprise infrastructure"
+    "decision": "ALLOW_SYNTHETIC_RELEASE",
+    "sourceState": "REHEARSAL",
+    "outcome": "Expected measurement; synthetic receipt only"
   },
-  "collectedAt": "2026-01-15T12:00:00.000Z"
+  "collectedAt": "2026-09-28T22:30:00.000Z"
 }

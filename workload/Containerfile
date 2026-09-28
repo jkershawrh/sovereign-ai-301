@@ -1,0 +1,6 @@
+FROM registry.access.redhat.com/ubi9/nodejs-22-minimal@sha256:a459753a1a8b417686ca77f0a4291028c50dfdc468c1e6e7868e636312df77ec
+WORKDIR /opt/app-root/src
+COPY workload/ ./workload/
+USER 1001
+EXPOSE 8080
+CMD ["node", "workload/server.mjs"]

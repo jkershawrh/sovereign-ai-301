@@ -6,11 +6,11 @@ registerAdapter(createJsonAdapter({
   timeoutMs: 2_500,
   rehearsal: {
     data: {
-      latency: 612,
-      throughput: 42,
-      outcome: 'Validated on enterprise infrastructure',
+      decision: 'ALLOW_SYNTHETIC_RELEASE',
+      sourceState: 'REHEARSAL',
+      outcome: 'Expected measurement; synthetic receipt only',
     },
-    collectedAt: '2026-01-15T12:00:00.000Z',
+    collectedAt: '2026-09-28T22:30:00.000Z',
   },
 }))
 
@@ -20,10 +20,10 @@ registerAdapter(createJsonAdapter({
   timeoutMs: 2_500,
   rehearsal: {
     data: {
-      latency: 488,
-      throughput: 57,
-      outcome: 'Changed input selects a different measured path',
+      decision: 'DENY_REPLAY',
+      sourceState: 'REHEARSAL',
+      outcome: 'Consumed nonce refuses key release',
     },
-    collectedAt: '2026-01-15T12:05:00.000Z',
+    collectedAt: '2026-09-28T22:31:00.000Z',
   },
 }))

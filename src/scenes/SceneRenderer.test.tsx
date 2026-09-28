@@ -29,10 +29,10 @@ describe('SceneRenderer', () => {
     expect(screen.queryByLabelText('Live technical deployment topology')).not.toBeInTheDocument()
     fireEvent.click(screen.getByRole('button', { name: 'Inspect technical topology' }))
     expect(screen.getByLabelText('Live technical deployment topology')).toBeInTheDocument()
-    expect(screen.getByText('OpenShift namespace')).toBeInTheDocument()
-    expect(screen.getByText('POST /api/proof')).toBeInTheDocument()
-    fireEvent.click(screen.getByRole('button', { name: /run the live journey/i }))
-    expect((await screen.findAllByText('Run the first condition'))[0]).toBeInTheDocument()
+    expect(screen.getByText('TD workload ↔ relying party')).toBeInTheDocument()
+    expect(screen.getByText('RCAR')).toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: /run the rehearsal/i }))
+    expect((await screen.findAllByText('Expected measurement'))[0]).toBeInTheDocument()
     expect(await screen.findByRole('button', { name: /next live act/i })).toBeInTheDocument()
   })
 
@@ -63,10 +63,10 @@ describe('SceneRenderer', () => {
   it('guides architecture as audience questions and revealed answers', async () => {
     const scene = scenes.find((item) => item.type === 'guided-architecture')!
     render(<SceneRenderer scene={scene} brand={demoConfig.brand} />)
-    expect(screen.getByText('What enters the system?')).toBeInTheDocument()
-    expect(screen.queryByText('A bounded, validated request starts the journey.')).not.toBeInTheDocument()
+    expect(screen.getByText('What does TDX add?')).toBeInTheDocument()
+    expect(screen.queryByText('Protection for data in use against host software.')).not.toBeInTheDocument()
     fireEvent.click(screen.getByRole('button', { name: 'Reveal technical boundary' }))
-    expect(await screen.findByText('A bounded, validated request starts the journey.')).toBeInTheDocument()
+    expect(await screen.findByText('Protection for data in use against host software.')).toBeInTheDocument()
     expect(document.querySelector('[data-node="route"]')).toHaveClass('active')
     fireEvent.click(screen.getByRole('button', { name: 'Ask next question →' }))
     expect(await screen.findByText('Where does the workload run and remain governable?')).toBeInTheDocument()
@@ -88,7 +88,7 @@ describe('SceneRenderer', () => {
     const configured = scenes.find((item) => item.type === 'evidence-payoff')!
     const scene = { ...configured, adapterIds: ['proof-that-has-not-run'] }
     render(<SceneRenderer scene={scene} brand={demoConfig.brand} />)
-    expect(screen.getByText('Run the live journey to populate this payoff')).toBeInTheDocument()
+    expect(screen.getByText('Run the rehearsal to populate this receipt')).toBeInTheDocument()
     expect(screen.getByText('not run')).toBeInTheDocument()
   })
 
