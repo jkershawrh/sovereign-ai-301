@@ -1,0 +1,10 @@
+{
+  "schema_version": "demo-story.redhat-intel.com/factory-development-journey/v1",
+  "source_revision": "d46625e8e1eb89e35c0a93385a47564d825a8115",
+  "method": ["CDD", "TDD", "EDD"],
+  "red_before_green": {"status": "PASS", "red_commit": "5679020a0f856ac6afc086a3d6aa427487fa21ea", "observed_result": "4 expected failing tests before implementation", "receipt": "docs/cdd-red-run.md"},
+  "green": {"vitest": 32, "node_contract_tests": 16, "browser_passed": 11, "browser_skipped_mobile_zero_scroll": 1, "helm_lint": "PASS", "offline_build": "PASS", "container_smoke": "PASS", "zero_residue": "PASS"},
+  "evidence_state": "REHEARSAL",
+  "live_tdx": "BLOCKED: factory is Apple M2 arm64 with no current Intel TDX quote or attached OpenShift Confidential Containers runtime",
+  "authority": "No catalog provisioning certification promotion or publication authority is granted."
+}

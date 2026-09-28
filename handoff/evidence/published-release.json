@@ -1,0 +1,18 @@
+{
+  "schema_version": "demo-story.redhat-intel.com/published-release/v1",
+  "evidence_scope": "published_immutable_factory_candidates",
+  "source_revision": "d46625e8e1eb89e35c0a93385a47564d825a8115",
+  "workflow_run": "https://github.com/jkershawrh/sovereign-ai-301/actions/runs/36494072807",
+  "workflow_conclusion": "success",
+  "platform": "linux/amd64",
+  "images": {
+    "qualifier": "ghcr.io/jkershawrh/sovereign-ai-301-qualifier@sha256:bb75ed470221e0e3b3490f82f980418d4d4890dded52db1d1fce26f58ef52edb",
+    "presentation": "ghcr.io/jkershawrh/sovereign-ai-301-presentation@sha256:1f28dbb880a349bd05cb44c0233f9c6f869d6b371a66d8589c600cb1c117fb9f"
+  },
+  "scan": {"scanner": "Grype 0.97.1", "qualifier": {"critical": 0, "high": 0, "medium": 4}, "presentation": {"critical": 0, "high": 0, "medium": 4}},
+  "sbom": {"format": "SPDX-2.3 JSON", "qualifier_packages": 198, "presentation_packages": 26},
+  "gates": {"exact_source_checkout": "PASS", "project_checks": "PASS", "complete_vulnerability_inventory": "PASS", "zero_high_or_critical": "PASS", "spdx_sbom": "PASS", "exact_digest_pull": "PASS", "sigstore_oidc_signature": "PASS", "slsa_provenance_attestation": "PASS", "sbom_attestation": "PASS", "verification_evidence_retained_90_days": "PASS"},
+  "live_tdx": "NOT RUN; BLOCKED",
+  "certification": "NOT CLAIMED",
+  "created_at": "2026-09-28T22:43:37Z"
+}

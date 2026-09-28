@@ -1,0 +1,12 @@
+sourceState: REHEARSAL
+image:
+  repository: ghcr.io/jkershawrh/sovereign-ai-301-qualifier
+  tag: ""
+  digest: sha256:bb75ed470221e0e3b3490f82f980418d4d4890dded52db1d1fce26f58ef52edb
+  pullPolicy: IfNotPresent
+confidentialRuntime:
+  enabled: false
+  runtimeClassName: ""
+resources:
+  requests: {cpu: 25m, memory: 48Mi}
+  limits: {cpu: 250m, memory: 128Mi}

@@ -1,0 +1,13 @@
+{
+  "schema_version": "demo-story.redhat-intel.com/presentation-verification/v1",
+  "source_revision": "d46625e8e1eb89e35c0a93385a47564d825a8115",
+  "scene_count": 7,
+  "unit_tests": {"passed": 32, "failed": 0},
+  "contract_tests": {"passed": 16, "failed": 0},
+  "browser_tests": {"passed": 11, "failed": 0, "skipped": 1},
+  "desktop_zero_scroll": {"1920x1080": "PASS", "1440x900": "PASS"},
+  "mobile": "PASS_USABLE",
+  "offline_assets": "PASS",
+  "source_state": "REHEARSAL",
+  "live_tdx_claimed": false
+}
