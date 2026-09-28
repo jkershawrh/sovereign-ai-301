@@ -42,7 +42,7 @@ jobs:
         with: {image: "ghcr.io/${{ github.repository_owner }}/${{ matrix.image }}:${{ inputs.expected_sha }}", severity-cutoff: high, fail-build: true, output-format: json, output-file: "vulnerability-${{ matrix.component }}.json"}
       - name: Generate SPDX SBOM
         uses: anchore/sbom-action@v0
-        with: {image: "ghcr.io/${{ github.repository_owner }}/${{ matrix.image }}:${{ inputs.expected_sha }}", format: spdx-json, output-file: "sbom-${{ matrix.component }}.spdx.json"}
+        with: {image: "ghcr.io/${{ github.repository_owner }}/${{ matrix.image }}:${{ inputs.expected_sha }}", format: spdx-json, output-file: "sbom-${{ matrix.component }}.spdx.json", upload-artifact: false}
       - name: Publish exact candidate
         id: publish
         run: |
@@ -60,7 +60,7 @@ jobs:
         run: |
           cosign sign --yes "$DIGEST_REF"
           cosign attest --yes --type spdxjson --predicate "sbom-${{ matrix.component }}.spdx.json" "$DIGEST_REF"
-          printf '{"source":"%s","revision":"%s","builder":"%s"}\n' "${{ github.repository }}" "${{ inputs.expected_sha }}" "${{ github.workflow_ref }}" > provenance.json
+          printf '{"builder":{"id":"%s"},"buildType":"https://github.com/Attestations/GitHubActionsWorkflow@v1","invocation":{"configSource":{"uri":"git+%s/%s","digest":{"sha1":"%s"},"entryPoint":".github/workflows/release.yml"}},"metadata":{"buildInvocationId":"%s"},"materials":[]}\n' "${{ github.workflow_ref }}" "${{ github.server_url }}" "${{ github.repository }}" "${{ inputs.expected_sha }}" "${{ github.run_id }}" > provenance.json
           cosign attest --yes --type slsaprovenance --predicate provenance.json "$DIGEST_REF"
       - name: Verify signature and attestations
         env: {DIGEST_REF: "${{ steps.publish.outputs.digest_ref }}"}
