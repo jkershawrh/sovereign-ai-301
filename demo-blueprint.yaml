@@ -1,0 +1,111 @@
+version: 1
+status: reviewed
+source:
+  name: sovereign-ai-lab
+  kind: canonical-discovery-source
+  location: https://github.com/jkershawrh/sovereign-ai-lab
+  revision: 05dea04c2faa95b2df426a228b8979ed7f07a098
+  discovered_at: 2026-09-28T22:25:43Z
+  inspected_artifacts: [README.md, infra/tdx/attest.sh, infra/tdx/verify-quote.sh, docs/kata-cc-tdx-blocker.md, experience/frontend/src/components/AttestationPanel.tsx, content/modules/ROOT/pages/02-attestation.adoc]
+  discrepancies:
+    - {id: fabricated-quote-fallback, status: verified, summary: Source can substitute timestamp-derived platform evidence when no quote tool exists; 301 forbids promoting it to LIVE TDX evidence.}
+    - {id: permissive-verification, status: verified, summary: Source can exit successfully for unknown or simulated evidence; 301 fails closed.}
+    - {id: kata-runtime-blocker, status: verified, summary: Source records a TDX VM boot without a working Kata guest-agent connection; it cannot certify workload execution.}
+    - {id: capability-versus-observation, status: verified, summary: CPU claims runtimeClass configuration or device presence never prove this workload executed in a TD.}
+    - {id: current-live-evidence, status: blocked, summary: Factory host is Apple M2 arm64 with no Intel TDX quote path or attached OpenShift TDX environment.}
+intent:
+  primary_user: Platform security engineer who completed Sovereign AI 101 and 201.
+  workload: A deterministic qualification service teaching TDX capability through fresh measured workload identity and appraisal to resource policy and a synthetic key-release receipt.
+  recognized_problem: Encrypted memory or a TDX-capable host does not prove which workload ran and valid evidence does not authorize a model key or inference request.
+  audience_decision: Approve a foundations lab that separates capability evidence appraisal resource authorization inference authorization and human authority and fails closed.
+  desired_outcome: Learners explain the chain exercise allowed and refusal paths and name the evidence missing before a LIVE TDX claim.
+architecture:
+  actors:
+    - {id: learner, name: Platform security engineer, kind: human, responsibility: Issues challenges inspects evidence and tests failure paths, status: verified, source: showroom/content}
+    - {id: owner, name: Workload owner, kind: human, responsibility: Owns reference values resource policy and promotion, status: verified, source: contracts/trust-chain.v1.json}
+  runtime_objects:
+    - {id: tdx-host, name: Intel Xeon TDX-capable host, kind: hardware, responsibility: Hosts a trust domain only when the full platform stack is enabled, status: assumed, source: deployment evidence required}
+    - {id: confidential-guest, name: Confidential Containers trust domain, kind: confidential VM, responsibility: Produces challenge-bound TDX evidence, status: assumed, source: deployment evidence required}
+    - {id: verifier, name: Attestation verifier, kind: Trustee attestation service, responsibility: Verifies and appraises evidence, status: assumed, source: Trustee deployment required}
+    - {id: kbs, name: Key Broker Service, kind: Trustee KBS, responsibility: Applies resource policy and encrypts allowed resources, status: assumed, source: Trustee deployment required}
+    - {id: inference, name: Governed inference service, kind: relying party, responsibility: Independently authorizes inference after resource access, status: assumed, source: Sovereign AI 201 boundary}
+    - {id: qualifier, name: Foundations qualifier, kind: rehearsal service, responsibility: Exercises typed fixtures without live quote secret model answer or performance claims, status: verified, source: workload/qualifier.mjs}
+  boundaries:
+    - {id: data-state, name: Data protection states, kind: threat, responsibility: Distinguishes at rest in transit and in use, status: verified, source: contracts/trust-chain.v1.json}
+    - {id: host-admin, name: Host and administrator boundary, kind: threat, responsibility: Excludes host OS hypervisor and cloud admin from TD confidentiality while retaining availability side-channel and guest-software risks, status: verified, source: Intel TDX guidance}
+    - {id: appraisal, name: Evidence appraisal, kind: policy, responsibility: Validates challenge freshness measurements endorsements and reference values without granting a resource, status: verified, source: RFC 9334 and Trustee}
+    - {id: resource, name: Resource policy, kind: policy, responsibility: Decides whether an appraisal may receive one named resource, status: verified, source: Trustee KBS protocol}
+    - {id: inference-auth, name: Inference authorization, kind: policy, responsibility: Separately authorizes caller and inference request, status: verified, source: contracts/trust-chain.v1.json}
+    - {id: human-authority, name: Human authority, kind: authority, responsibility: Keeps deployment certification reference-value changes and promotion human-owned, status: verified, source: handoff/launchpad-handoff.yaml}
+  external_dependencies:
+    - {id: openshift, name: OpenShift Sandboxed Containers, kind: platform, responsibility: Supplies Confidential Containers on an approved TDX host, status: assumed, source: Red Hat documentation}
+    - {id: trustee, name: Trustee and trustee-operator, kind: attestation, responsibility: Supplies verifier KBS reference values and policies, status: assumed, source: Confidential Containers}
+  flows:
+    - id: attest-appraise-release
+      name: Attest appraise and authorize
+      kind: trust-chain
+      trigger: Workload requests a verifier challenge for one protected resource.
+      outcome: KBS authorizes only fresh valid expected identity under independent resource policy.
+      edges:
+        - {from: verifier, to: confidential-guest, purpose: issue a single-use challenge, protocol: Trustee RCAR, evidenceIds: [nonce-receipt]}
+        - {from: confidential-guest, to: verifier, purpose: return quote-bound evidence, protocol: TDX evidence, evidenceIds: [attestation-evidence]}
+        - {from: verifier, to: kbs, purpose: return appraisal results, protocol: attestation result token, evidenceIds: [appraisal-result]}
+        - {from: kbs, to: confidential-guest, purpose: apply resource policy, protocol: JWE resource response, evidenceIds: [resource-decision]}
+        - {from: confidential-guest, to: inference, purpose: request independent authorization, protocol: governed inference contract, evidenceIds: [inference-decision]}
+        - {from: inference, to: owner, purpose: expose evidence for human disposition, protocol: redacted record, evidenceIds: [human-disposition]}
+    - id: refuse-unsafe-release
+      name: Refuse unsafe states
+      kind: decision
+      trigger: Measurement freshness nonce verifier KBS or TDX state fails.
+      outcome: No key material model access or LIVE claim is produced.
+      edges:
+        - {from: qualifier, to: owner, purpose: return typed refusal, protocol: HTTP JSON, evidenceIds: [failure-matrix]}
+operational_pattern:
+  name: Classify challenge measure appraise authorize release and decide
+  rationale: Learners must locate every claim and decision rather than treat TDX as one secure flag.
+  steps:
+    - {id: classify, label: Classify data and threats, question: Is protection at rest in transit or in use and who is outside the boundary?, flowIds: [attest-appraise-release], evidenceIds: [data-state-map]}
+    - {id: challenge, label: Issue a single-use challenge, question: Can evidence be bound to this request?, flowIds: [attest-appraise-release], evidenceIds: [nonce-receipt]}
+    - {id: measure, label: Inspect workload identity, question: Is this workload measured rather than merely a capable CPU?, flowIds: [attest-appraise-release], evidenceIds: [attestation-evidence]}
+    - {id: appraise, label: Appraise evidence, question: Do freshness signature and measurements match named policy?, flowIds: [attest-appraise-release, refuse-unsafe-release], evidenceIds: [appraisal-result]}
+    - {id: authorize, label: Apply resource policy, question: May this identity receive this resource?, flowIds: [attest-appraise-release], evidenceIds: [resource-decision]}
+    - {id: release, label: Separate release from inference, question: Does inference still require its own authorization?, flowIds: [attest-appraise-release], evidenceIds: [inference-decision]}
+    - {id: decide, label: Record human authority, question: Who may deploy certify or promote?, flowIds: [attest-appraise-release], evidenceIds: [human-disposition]}
+  changed_condition: Allowed invalid measurement stale replay verifier unavailable KBS unavailable and non-TDX paths use one contract and every unsafe path refuses release.
+  close: Learners prove rehearsal semantics and name missing LIVE evidence; humans retain certification and promotion authority.
+evidence:
+  - {id: data-state-map, name: Protection-state map, source: contracts/trust-chain.v1.json, collection: reviewed contract, supports: Threat boundaries, status: verified}
+  - {id: nonce-receipt, name: Challenge receipt, source: qualifier, collection: single-use nonce and issue time, supports: Fresh request binding, status: verified}
+  - {id: attestation-evidence, name: Typed evidence, source: REHEARSAL fixtures or future TDX quote, collection: parser, supports: Workload identity input with source state, status: verified}
+  - {id: appraisal-result, name: Appraisal result, source: evaluator or future verifier, collection: freshness nonce measurements and policy, supports: Appraisal distinct from permission, status: verified}
+  - {id: resource-decision, name: Resource decision, source: resource policy or future KBS, collection: exact resource evaluation, supports: Key-release authorization or refusal, status: verified}
+  - {id: inference-decision, name: Inference decision, source: downstream boundary, collection: independent policy result, supports: Release is not inference authorization, status: verified}
+  - {id: failure-matrix, name: Failure matrix, source: tests, collection: seven conditions, supports: Fail closed behavior, status: verified}
+  - {id: human-disposition, name: Human authority, source: handoff, collection: flags and blockers, supports: No automated promotion, status: verified}
+decisions:
+  - {id: appraise, owner: Verifier, policy: Require authentic challenge-bound fresh evidence and expected measurements, failClosedBehavior: Unknown invalid stale replayed or unavailable evidence cannot authorize resources, status: verified}
+  - {id: release, owner: KBS resource policy, policy: Match valid appraisal to one resource, failClosedBehavior: Deny when policy KBS or resource is absent, status: verified}
+  - {id: infer, owner: Governed inference service, policy: Evaluate caller request independently, failClosedBehavior: Released resource never implies inference permission, status: verified}
+  - {id: promote, owner: Named human reviewers, policy: Require current LIVE TDX evidence and independent certification, failClosedBehavior: Remain noncertified and nonpromotable, status: verified}
+ai_assessment:
+  needed: false
+  kind: none
+  rationale: Evidence and policy qualification is deterministic.
+  tasks: []
+  inputs: []
+  outputs: []
+  model_identity_source: null
+  hardware_identity_source: LIVE TDX quote and placement evidence only
+  evidence_access: []
+  action_authority: none
+  validation: [Contract parsing, nonce binding, freshness, replay, measurements, dependency availability, resource decision, independent inference authorization]
+  fallback: REHEARSAL uses synthetic fixtures and OFFLINE explains failures; neither earns LIVE credit.
+  final_decision_owner: Named human platform security and Launchpad reviewers
+story_mapping:
+  audience_question: When may a confidential workload receive a model key and what remains unproven?
+  stakes: [TDX capability can be mistaken for workload identity and valid evidence can be mistaken for permission.]
+  architecture_flow_ids: [attest-appraise-release, refuse-unsafe-release]
+  live_proof_flow_ids: [attest-appraise-release, refuse-unsafe-release]
+  comparison: One explicit REHEARSAL allow path versus six fail-closed paths
+  payoff: A separable chain from capability through appraisal and resource policy to inference and human authority.
+  next_journey: Open the separate Showroom and inspect challenges measurements policy refusal and blockers.

@@ -1,0 +1,45 @@
+version: 1
+blueprint: demo-blueprint.yaml
+presentation:
+  title: Sovereign AI 301 — Confidential Inference and Intel TDX Foundations
+  audience: Platform security engineers and governance reviewers
+  desired_decision: Adopt a fail-closed trust-chain contract before LIVE TDX certification.
+  duration_minutes: 7
+  core_tension: TDX capability is not observed execution and valid evidence is not permission to release a key or run inference.
+  cta: Open the separate Showroom and exercise the allow and refusal matrix.
+source_material:
+  mode: repository
+  items: [https://github.com/jkershawrh/sovereign-ai-lab, demo-blueprint.yaml]
+  consequential_assumptions:
+    - Simulated quotes permissive verification secret fallback and performance claims are not inherited.
+    - This Apple M2 factory cannot produce current Intel TDX evidence.
+    - Executable scenarios remain REHEARSAL or OFFLINE until a typed current TDX quote path is attached.
+architecture:
+  actors: [Platform security learner, Workload owner, Launchpad reviewer]
+  boundaries: [Protection state, Host and administrator, Evidence appraisal, Resource policy, Inference authorization, Human authority]
+  critical_flows: [attest-appraise-release, refuse-unsafe-release]
+  omitted_from_main_story: [Performance claims, Unverified hardware claims, Actual secrets, Catalog certification]
+beats:
+  - {beat: ordinary-world, claim: At-rest and in-transit encryption do not protect data during processing.}
+  - {beat: stakes, claim: A TDX checkbox can collapse capability appraisal and permission into a dangerous claim.}
+  - {beat: reframe, claim: Confidential inference is a chain of independent evidence and policy decisions.}
+  - {beat: system-reveal, claim: Follow challenge workload measurement appraisal resource policy inference authorization and human authority.}
+  - {beat: live-proof, claim: Exercise explicit REHEARSAL fixtures without secret material.}
+  - {beat: trials, claim: Invalid stale replayed unavailable and non-TDX conditions refuse release.}
+  - {beat: transformation, claim: The receipt states what was proven refused and blocked.}
+  - {beat: next-journey, claim: Attach real TDX Trustee and OpenShift evidence under independent certification.}
+evidence:
+  - {id: contract, claim: Boundaries are executable and versioned, classification: verified-fact, source: contracts and tests, owner: Workload team, last_verified: 2026-09-28, treatment: Run the failure matrix.}
+  - {id: rehearsal, claim: Fixtures demonstrate semantics without claiming a TDX quote, classification: rehearsal-evidence, source: fixtures and qualifier, owner: Workload team, last_verified: 2026-09-28, treatment: Label every response REHEARSAL.}
+  - {id: live-tdx, claim: This workload executed inside TDX, classification: live-measurement, source: current quote verifier and deployment evidence, owner: Runtime platform, last_verified: null, treatment: BLOCKED and never inferred.}
+live_systems:
+  - {id: qualifier, endpoint: /api/v1/qualify, timeout: 5s, fallback: explicit REHEARSAL or OFFLINE with no secrets or fabricated LIVE evidence}
+journey:
+  presentation: Seven-scene Triforce decision story
+  live_demonstration: REHEARSAL allow and six refusal paths
+  guided_demo: Reveal one boundary per decision
+  hands_on_lab: Separate Antora Showroom
+open_questions:
+  - Which approved Intel Xeon TDX host and OpenShift runtime will provide current evidence?
+  - Which reviewed Trustee reference values and policies are authoritative?
+  - Who owns live qualification cleanup certification and promotion?
