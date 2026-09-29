@@ -10,3 +10,11 @@ confidentialRuntime:
 resources:
   requests: {cpu: 25m, memory: 48Mi}
   limits: {cpu: 250m, memory: 128Mi}
+presentation:
+  image:
+    repository: ghcr.io/jkershawrh/sovereign-ai-301-presentation
+    digest: sha256:1f28dbb880a349bd05cb44c0233f9c6f869d6b371a66d8589c600cb1c117fb9f
+    pullPolicy: IfNotPresent
+  resources:
+    requests: {cpu: 25m, memory: 32Mi}
+    limits: {cpu: 100m, memory: 96Mi}
