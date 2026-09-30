@@ -28,11 +28,16 @@ test('chart defaults to rehearsal and cannot imply LIVE TDX', async () => {
 test('presentation is compatible with restricted OpenShift seats and long namespaces', async () => {
   const deployment = await readFile('charts/sovereign-ai-301/templates/presentation.yaml', 'utf8')
   const route = await readFile('charts/sovereign-ai-301/templates/route.yaml', 'utf8')
+  const containerfile = await readFile('Containerfile', 'utf8')
+  const nginx = await readFile('nginx-main.conf', 'utf8')
 
   assert.match(deployment, /name:\s+nginx-run,\s+mountPath:\s+\/run/)
   assert.match(deployment, /name:\s+nginx-run,\s+emptyDir:/)
   assert.match(route, /metadata:\s*\n\s+name:\s+story/)
   assert.match(route, /name:\s+\{\{ \.Release\.Name \}\}-presentation/)
+  assert.match(containerfile, /COPY nginx-main\.conf \/etc\/nginx\/nginx\.conf/)
+  assert.match(nginx, /worker_processes\s+2;/)
+  assert.doesNotMatch(nginx, /worker_processes\s+auto;/)
 })
 
 test('no environment secret fallback or fabricated performance copy is shipped', async () => {
