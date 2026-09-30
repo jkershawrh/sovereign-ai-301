@@ -4,5 +4,8 @@ metadata: {name: {{ .Release.Name }}-default-deny}
 spec:
   podSelector: {matchLabels: {app.kubernetes.io/name: sovereign-ai-301}}
   policyTypes: [Ingress, Egress]
-  ingress: []
+  ingress:
+    - from:
+        - podSelector: {matchLabels: {app.kubernetes.io/name: showroom}}
+      ports: [{protocol: TCP, port: 8080}]
   egress: []

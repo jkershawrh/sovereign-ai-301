@@ -18,12 +18,12 @@ const technicalTopology = {
 }
 
 export const demoConfig: DemoConfig = {
-  id: 'sovereign-ai-301', title: "Sovereign AI 301 — Confidential Inference and Intel TDX Foundations", subtitle: "Capability → measured identity → policy-gated model access", event: 'Platform security briefing', audience: 'Platform security engineers', cta: 'Trace what is proven—and what is not.',
+  id: 'sovereign-ai-301', title: "Sovereign AI 301 — Confidential Inference and Intel TDX Foundations", subtitle: "Capability → measured identity → policy-gated model access", event: 'Northstar Claims confidential AI design review', audience: 'Platform security engineers', cta: 'Build the claims-assistant trust chain—and trace what is not yet proven.',
   brand: { primary: { name: 'Red Hat', logo: '/logos/redhat.svg', alt: 'Red Hat' }, partner: { name: 'Intel', logo: '/logos/intel.png', alt: 'Intel' }, attribution: 'Red Hat × Intel' },
   acts: [
     { id: 'story', label: '00', title: 'The Decision', scenes: [
-      { id: 'intro', type: 'intro', beat: 'ordinary-world', title: 'Encrypted is not yet attested', subtitle: 'At rest · in transit · in use are three different claims', speakerPrompt: 'State that this session is REHEARSAL: no current TDX quote, secret, model call, or performance measurement.' },
-      { id: 'reframe', type: 'reframe', beat: 'stakes', eyebrow: 'The dangerous shortcut', title: 'A TDX-capable host does not identify this workload', before: 'Capability or runtimeClass', after: 'Fresh evidence + appraisal + policy', detail: 'A valid appraisal still grants no resource; a released resource still grants no inference permission.', speakerPrompt: 'Separate capability, observation, evidence, appraisal, resource policy, inference policy, and human authority.' },
+      { id: 'intro', type: 'intro', beat: 'ordinary-world', title: 'Encrypted is not yet attested', subtitle: 'Northstar Claims must protect its Sovereign AI 201 claims-assistant while data is in use', speakerPrompt: 'State that this session is REHEARSAL: no current TDX quote, secret, model call, or performance measurement.' },
+      { id: 'reframe', type: 'reframe', beat: 'stakes', eyebrow: 'The dangerous shortcut', title: 'A TDX-capable host does not identify this workload', before: 'Sovereign AI 201 · governed application', after: 'Fresh evidence + appraisal + policy', detail: 'A valid appraisal still grants no resource; a released resource still grants no inference permission. Sovereign AI 401 will operate this lifecycle.', speakerPrompt: 'Separate capability, observation, evidence, appraisal, resource policy, inference policy, and human authority.' },
     ] },
     { id: 'architecture', label: '01', title: 'Guided Architecture', scenes: [
       { id: 'guided-architecture', type: 'guided-architecture', beat: 'system-reveal', eyebrow: 'Trust chain', title: 'Six boundaries, one fail-closed chain', body: 'Every arrow changes the kind of claim; none may be skipped.', layers: [

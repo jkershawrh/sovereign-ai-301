@@ -1,5 +1,39 @@
-= 6. Evidence and handoff
+= 6. Hand off evidence and preserve reclaim ownership
 
-Your receipt proves deterministic rehearsal behavior only. It cannot prove an enabled Intel TDX platform, workload placement, a verified quote, a live Trustee decision, or confidential inference performance.
+== Show
+The 301 receipt states what the contract proved, refused, and left blocked for
+Sovereign AI 401.
 
-Named humans own reference-value changes, deployment, certification, and promotion. Launchpad must independently qualify the target cluster, immutable images, Trustee policies, one-seat behavior, scale, reclaim, and rollback.
+== Learn
+Participants own temporary evidence files. Launchpad owns the workload,
+presentation, Showroom, namespace, policy, and final reclaim.
+
+== Do
+[source,bash,role="execute"]
+----
+python3 - <<'PY'
+import json, pathlib
+records=[json.load(open(p)) for p in ['/tmp/northstar-301-allowed.json','/tmp/northstar-301-replay.json','/tmp/northstar-301-verifier.json','/tmp/northstar-301-kbs.json']]
+out={'journey':'sovereign-ai-301','customer':'Northstar Claims','records':records,
+     'liveBlockers':['current TDX quote','live Trustee/KBS','protected resource','observed inference'],
+     'next':'Sovereign AI 401'}
+pathlib.Path('/tmp/northstar-301-evidence.json').write_text(json.dumps(out,indent=2))
+print('/tmp/northstar-301-evidence.json')
+PY
+----
+[source,bash,role="execute"]
+----
+python3 - <<'PY'
+import json
+d=json.load(open('/tmp/northstar-301-evidence.json'))
+assert all(r['modelInvoked'] is False for r in d['records'])
+assert all(r['humanAuthority']['promotionEligible'] is False for r in d['records'])
+print('PASS: bounded rehearsal evidence; zero model executions; human authority retained')
+PY
+rm -f /tmp/northstar-301-*.json
+----
+
+== Prove
+The participant-owned files are removed while the Launchpad-owned service is
+still available. Use the portal's reclaim action after the lab; do not delete
+the namespace or shared operators.

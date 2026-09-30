@@ -1,9 +1,9 @@
 version: 1
 blueprint: demo-blueprint.yaml
 presentation:
-  title: Sovereign AI 301 — Confidential Inference and Intel TDX Foundations
+  title: Northstar Claims — Confidential Inference and Intel TDX Foundations
   audience: Platform security engineers and governance reviewers
-  desired_decision: Adopt a fail-closed trust-chain contract before LIVE TDX certification.
+  desired_decision: Continue Sovereign AI 201 by adopting a fail-closed trust-chain contract for the claims-assistant before LIVE TDX certification, then hand it to Sovereign AI 401 operations.
   duration_minutes: 7
   core_tension: TDX capability is not observed execution and valid evidence is not permission to release a key or run inference.
   cta: Open the separate Showroom and exercise the allow and refusal matrix.

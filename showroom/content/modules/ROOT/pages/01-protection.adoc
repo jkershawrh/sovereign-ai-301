@@ -1,5 +1,23 @@
-= 1. Protection states and threat boundary
+= 1. Draw the protection boundary
 
-At-rest encryption protects stored bytes. In-transit encryption protects a channel. Intel TDX addresses data in use by isolating a trust domain's memory and CPU state from host software. It does not by itself solve availability, every side channel, malicious guest code, bad reference values, or bad policy.
+== Show
+At rest, in transit, and in use protect different parts of Northstar's claim data.
 
-Record which claim belongs to each state. Treat the host OS, hypervisor, other VMs, and cloud administrator as outside the TD confidentiality and integrity boundary while keeping the residual risks visible.
+== Learn
+Intel TDX can isolate a trust domain from host software, but capability does not
+prove this workload ran there or matched an approved measurement.
+
+== Do
+[source,bash,role="execute"]
+----
+export TRUST_URL=http://sovereign-ai-301:8080
+curl -fsS "$TRUST_URL/healthz" | python3 -m json.tool
+----
+[source,bash,role="execute"]
+----
+curl -fsS "$TRUST_URL/api/v1/scenarios" | tee /tmp/northstar-301-scenarios.json | python3 -m json.tool
+----
+
+== Prove
+The service is `REHEARSAL` and `liveTdxObserved` is false. Residual risks and
+unavailable observations stay visible.

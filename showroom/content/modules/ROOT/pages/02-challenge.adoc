@@ -1,3 +1,25 @@
-= 2. Challenge and evidence
+= 2. Challenge the exact workload
 
-A CPU product name or `runtimeClassName` signals capability or intent. Neither observes this workload inside TDX. Inspect the evidence contract, then issue a unique verifier challenge. The nonce must be bound into evidence and consumed once; otherwise an old result can be replayed.
+== Show
+A single-use nonce must be bound to the exact claims-assistant evidence.
+
+== Learn
+A CPU name or RuntimeClass expresses capability or intent. Fresh evidence is
+required to identify the workload for this decision.
+
+== Do
+[source,bash,role="execute"]
+----
+curl -fsS -X POST "$TRUST_URL/api/v1/reset" | python3 -m json.tool
+curl -fsS -X POST "$TRUST_URL/api/v1/qualify" -H 'content-type: application/json' \
+  -d '{"scenario":"allowed"}' | tee /tmp/northstar-301-allowed.json | python3 -m json.tool
+----
+[source,bash,role="execute"]
+----
+curl -fsS -X POST "$TRUST_URL/api/v1/qualify" -H 'content-type: application/json' \
+  -d '{"scenario":"allowed"}' | tee /tmp/northstar-301-replay.json | python3 -m json.tool
+----
+
+== Prove
+The first decision is `ALLOW_SYNTHETIC_RELEASE`; replaying its nonce returns
+`DENY_REPLAY`.

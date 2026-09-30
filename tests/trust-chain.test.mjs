@@ -42,6 +42,20 @@ test('nonce is bound, fresh, and single use', () => {
   assert.equal(replay.resourcePolicy.allowed, false)
 })
 
+test('allowed rehearsal evidence is fresh for each participant run', () => {
+  const originalNow = Date.now
+  try {
+    Date.now = () => 1_700_000_000_000
+    const first = scenarios.allowed
+    Date.now = () => 1_700_000_600_000
+    const later = scenarios.allowed
+    assert.equal(Date.parse(later.evidence.collectedAt) - Date.parse(first.evidence.collectedAt), 600_000)
+    assert.equal(qualify(later).decision, 'ALLOW_SYNTHETIC_RELEASE')
+  } finally {
+    Date.now = originalNow
+  }
+})
+
 test('valid appraisal cannot authorize a different resource', () => {
   const result = qualify({...scenarios.allowed, requestedResource: 'models/other/key'})
   assert.equal(result.appraisal.valid, true)

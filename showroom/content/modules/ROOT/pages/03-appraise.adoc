@@ -1,3 +1,26 @@
 = 3. Appraise measured identity
 
-The verifier checks authenticity, challenge binding, freshness, endorsements, and measurements against named reference values. Evidence is input; appraisal is the verifier's result. Change the measurement and timestamp. Both must refuse release without becoming a generic success.
+== Show
+Evidence is input; appraisal is the verifier's result.
+
+== Learn
+Freshness and measurement are independent checks. Neither can be skipped or
+converted into a generic success.
+
+== Do
+[source,bash,role="execute"]
+----
+for scenario in invalid_measurement stale_evidence non_tdx; do
+  curl -fsS -X POST "$TRUST_URL/api/v1/reset" >/dev/null
+  curl -fsS -X POST "$TRUST_URL/api/v1/qualify" -H 'content-type: application/json' \
+    -d "{\"scenario\":\"$scenario\"}" | python3 -c 'import json,sys; d=json.load(sys.stdin); print(d["scenario"], d["decision"])'
+done
+----
+[source,bash,role="execute"]
+----
+curl -fsS -X POST "$TRUST_URL/api/v1/qualify" -H 'content-type: application/json' \
+  -d '{"scenario":"verifier_unavailable"}' | tee /tmp/northstar-301-verifier.json | python3 -m json.tool
+----
+
+== Prove
+Invalid states deny, and missing independent verification reports `OFFLINE`.

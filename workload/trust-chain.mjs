@@ -3,23 +3,21 @@ import {createHash} from 'node:crypto'
 const replayCache = new Set()
 const expectedMeasurement = 'sha384:rehearsal-workload-v1'
 const protectedResource = 'models/granite/key'
-const now = Date.now()
-
-const base = {
+const baseAt = (now = Date.now()) => ({
   scenario: 'allowed', requestedResource: protectedResource,
   capability: {cpu: 'tdx-capable', runtimeClassName: 'kata-cc'},
   evidence: {sourceState: 'REHEARSAL', tee: 'tdx', nonce: 'nonce-allowed-001', collectedAt: new Date(now).toISOString(), measurement: expectedMeasurement, signatureValid: true},
   dependencies: {verifier: true, kbs: true},
-}
+})
 
 export const scenarios = Object.freeze({
-  allowed: base,
-  invalid_measurement: {...base, scenario: 'invalid_measurement', evidence: {...base.evidence, nonce: 'nonce-invalid-001', measurement: 'sha384:unexpected'}},
-  stale_evidence: {...base, scenario: 'stale_evidence', evidence: {...base.evidence, nonce: 'nonce-stale-001', collectedAt: new Date(now - 600_000).toISOString()}},
-  replayed_evidence: {...base, scenario: 'replayed_evidence', evidence: {...base.evidence, nonce: 'nonce-replayed-001'}},
-  verifier_unavailable: {...base, scenario: 'verifier_unavailable', evidence: {...base.evidence, nonce: 'nonce-verifier-001'}, dependencies: {verifier: false, kbs: true}},
-  kbs_unavailable: {...base, scenario: 'kbs_unavailable', evidence: {...base.evidence, nonce: 'nonce-kbs-001'}, dependencies: {verifier: true, kbs: false}},
-  non_tdx: {...base, scenario: 'non_tdx', evidence: {...base.evidence, nonce: 'nonce-nontdx-001', tee: 'none'}},
+  get allowed() { return baseAt() },
+  get invalid_measurement() { const base = baseAt(); return {...base, scenario: 'invalid_measurement', evidence: {...base.evidence, nonce: 'nonce-invalid-001', measurement: 'sha384:unexpected'}} },
+  get stale_evidence() { const now = Date.now(); const base = baseAt(now); return {...base, scenario: 'stale_evidence', evidence: {...base.evidence, nonce: 'nonce-stale-001', collectedAt: new Date(now - 600_000).toISOString()}} },
+  get replayed_evidence() { const base = baseAt(); return {...base, scenario: 'replayed_evidence', evidence: {...base.evidence, nonce: 'nonce-replayed-001'}} },
+  get verifier_unavailable() { const base = baseAt(); return {...base, scenario: 'verifier_unavailable', evidence: {...base.evidence, nonce: 'nonce-verifier-001'}, dependencies: {verifier: false, kbs: true}} },
+  get kbs_unavailable() { const base = baseAt(); return {...base, scenario: 'kbs_unavailable', evidence: {...base.evidence, nonce: 'nonce-kbs-001'}, dependencies: {verifier: true, kbs: false}} },
+  get non_tdx() { const base = baseAt(); return {...base, scenario: 'non_tdx', evidence: {...base.evidence, nonce: 'nonce-nontdx-001', tee: 'none'}} },
 })
 
 export function resetReplayCache() { replayCache.clear() }

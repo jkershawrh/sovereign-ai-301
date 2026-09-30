@@ -1,5 +1,14 @@
-= Confidential inference trust-chain foundations
+= Northstar Claims: build the confidential-inference trust chain
 
-This 35-minute lab uses **REHEARSAL** fixtures. It does not produce a TDX quote, release a secret, invoke a model, or claim latency or performance. LIVE TDX credit requires current hardware-rooted evidence from an approved environment.
+In *Sovereign AI 201*, Northstar Claims built a governed `claims-assistant`.
+The next requirement is to protect regulated claim data while it is processed
+without confusing Intel TDX capability with proof about a particular workload.
 
-You will trace: TDX-capable hardware → challenge-bound measured workload identity → appraisal policy → resource policy → independent inference authorization → human authority.
+This 35-minute *Sovereign AI 301* lab uses explicit *REHEARSAL* fixtures. Its
+customer outcome is a fail-closed, reviewable trust-chain contract that can move
+to *Sovereign AI 401* for operating-lifecycle practice.
+
+You will show, learn, do, and prove the chain from protection state through
+challenge, appraisal, resource policy, independent inference authorization, and
+human authority. No TDX quote, secret, model execution, latency, or performance
+claim is produced here.
