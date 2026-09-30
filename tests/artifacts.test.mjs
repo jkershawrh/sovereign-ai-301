@@ -25,6 +25,16 @@ test('chart defaults to rehearsal and cannot imply LIVE TDX', async () => {
   assert.match(values, /confidentialRuntime:\s*\n\s+enabled:\s+false/)
 })
 
+test('presentation is compatible with restricted OpenShift seats and long namespaces', async () => {
+  const deployment = await readFile('charts/sovereign-ai-301/templates/presentation.yaml', 'utf8')
+  const route = await readFile('charts/sovereign-ai-301/templates/route.yaml', 'utf8')
+
+  assert.match(deployment, /name:\s+nginx-run,\s+mountPath:\s+\/run/)
+  assert.match(deployment, /name:\s+nginx-run,\s+emptyDir:/)
+  assert.match(route, /metadata:\s*\n\s+name:\s+story/)
+  assert.match(route, /name:\s+\{\{ \.Release\.Name \}\}-presentation/)
+})
+
 test('no environment secret fallback or fabricated performance copy is shipped', async () => {
   const files = ['README.md', 'src/demo.config.ts', 'showroom/content/modules/ROOT/pages/index.adoc']
   for (const path of files) {
