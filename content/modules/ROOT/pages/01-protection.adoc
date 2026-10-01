@@ -1,0 +1,23 @@
+= 1. Draw the protection boundary
+
+== Show
+At rest, in transit, and in use protect different parts of Northstar's claim data.
+
+== Learn
+Intel TDX can isolate a trust domain from host software, but capability does not
+prove this workload ran there or matched an approved measurement.
+
+== Do
+[source,bash,role="execute"]
+----
+export TRUST_URL=http://sovereign-ai-301:8080
+curl -fsS "$TRUST_URL/healthz" | python3 -m json.tool
+----
+[source,bash,role="execute"]
+----
+curl -fsS "$TRUST_URL/api/v1/scenarios" | tee /tmp/northstar-301-scenarios.json | python3 -m json.tool
+----
+
+== Prove
+The service is `REHEARSAL` and `liveTdxObserved` is false. Residual risks and
+unavailable observations stay visible.

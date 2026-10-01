@@ -1,0 +1,14 @@
+= Northstar Claims: build the confidential-inference trust chain
+
+In *Sovereign AI 201*, Northstar Claims built a governed `claims-assistant`.
+The next requirement is to protect regulated claim data while it is processed
+without confusing Intel TDX capability with proof about a particular workload.
+
+This 35-minute *Sovereign AI 301* lab uses explicit *REHEARSAL* fixtures. Its
+customer outcome is a fail-closed, reviewable trust-chain contract that can move
+to *Sovereign AI 401* for operating-lifecycle practice.
+
+You will show, learn, do, and prove the chain from protection state through
+challenge, appraisal, resource policy, independent inference authorization, and
+human authority. No TDX quote, secret, model execution, latency, or performance
+claim is produced here.

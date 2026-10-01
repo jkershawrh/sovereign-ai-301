@@ -1,0 +1,28 @@
+= 5. Refuse every unsafe state
+
+== Show
+The same contract distinguishes invalid, stale, replayed, unavailable, and
+non-TDX states without a secret fallback.
+
+== Learn
+Failure classification matters: operators need a precise reason, not a generic
+red light that hides the broken boundary.
+
+== Do
+[source,bash,role="execute"]
+----
+for scenario in allowed invalid_measurement stale_evidence replayed_evidence verifier_unavailable kbs_unavailable non_tdx; do
+  curl -fsS -X POST "$TRUST_URL/api/v1/reset" >/dev/null
+  curl -fsS -X POST "$TRUST_URL/api/v1/qualify" -H 'content-type: application/json' \
+    -d "{\"scenario\":\"$scenario\"}" | python3 -c 'import json,sys; d=json.load(sys.stdin); print(d["scenario"], d["decision"], d["sourceState"])'
+done
+----
+[source,bash,role="execute"]
+----
+curl -fsS -X POST "$TRUST_URL/api/v1/qualify" -H 'content-type: application/json' \
+  -d '{"scenario":"kbs_unavailable"}' | tee /tmp/northstar-301-kbs.json | python3 -m json.tool
+----
+
+== Prove
+Only `allowed` produces a synthetic receipt. Every unsafe condition denies with
+no key material, model call, or false LIVE label.
