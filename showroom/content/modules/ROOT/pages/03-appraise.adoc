@@ -21,6 +21,21 @@ done
 curl -fsS -X POST "$TRUST_URL/api/v1/qualify" -H 'content-type: application/json' \
   -d '{"scenario":"verifier_unavailable"}' | tee /tmp/northstar-301-verifier.json | python3 -m json.tool
 ----
+[source,bash,role="execute"]
+----
+cat > "$NORTHSTAR_DIR/appraisal-matrix.md" <<'EOF'
+# Appraisal matrix
+
+| Condition | Required result |
+|---|---|
+| Fresh evidence + approved measurement | Eligible for resource-policy evaluation |
+| Invalid measurement | Deny measurement |
+| Stale evidence | Deny freshness |
+| Non-TDX workload | Deny capability |
+| Verifier unavailable | Offline; never fall back to allow |
+EOF
+sed -i 's|- Evidence appraisal:.*|- Evidence appraisal: freshness, measurement, capability, and verifier availability are independent fail-closed checks|' "$NORTHSTAR_DIR/decision-brief.md"
+----
 
 == Prove
 Invalid states deny, and missing independent verification reports `OFFLINE`.

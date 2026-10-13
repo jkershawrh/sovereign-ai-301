@@ -1,14 +1,44 @@
-= Northstar Claims: build the confidential-inference trust chain
+= Northstar Claims: qualify a sovereign inference design
 
 In *Sovereign AI 201*, Northstar Claims built a governed `claims-assistant`.
-The next requirement is to protect regulated claim data while it is processed
-without confusing Intel TDX capability with proof about a particular workload.
+Northstar now wants to process regulated claims in a confidential-computing
+trust domain without allowing a hardware label, a stale quote, or an available
+model to become accidental authorization.
 
-This 35-minute *Sovereign AI 301* lab uses explicit *REHEARSAL* fixtures. Its
-customer outcome is a fail-closed, reviewable trust-chain contract that can move
-to *Sovereign AI 401* for operating-lifecycle practice.
+The customer outcome is a defensible answer to one question: *may this exact
+workload receive access to one protected resource under the evidence available
+right now?*
 
-You will show, learn, do, and prove the chain from protection state through
-challenge, appraisal, resource policy, independent inference authorization, and
-human authority. No TDX quote, secret, model execution, latency, or performance
-claim is produced here.
+In this 60-minute *Sovereign AI 301* lab, you act as Northstar's solution
+architect. You will define the protection boundary, challenge an exact workload,
+appraise measured identity, separate resource release from inference authority,
+exercise failure states, and prepare a reviewable evidence handoff.
+
+Every technical stage follows *Show → Learn → Do → Prove*. You leave with a
+portable Northstar qualification package containing your boundary decision,
+appraisal matrix, resource policy, failure matrix, and evidence manifest.
+That package becomes the explicit input to *Sovereign AI 401*, where the
+operating lifecycle and live-environment dependencies can be qualified.
+
+[cols="1,3,1",options="header"]
+|===
+|Stage |What you do |Time
+|Mission |Translate Northstar's business requirement into an accountable decision |5 min
+|Protect |Draw the in-use data and authority boundary |8 min
+|Challenge |Bind fresh evidence to one exact workload |8 min
+|Appraise |Evaluate freshness, measurement, and verifier availability |10 min
+|Authorize |Separate protected-resource release from inference permission |8 min
+|Refuse |Exercise every unsafe and unavailable state |8 min
+|Handoff |Package evidence and a human recommendation |8 min
+|Clean up |Remove temporary material and prove what remains |5 min
+|===
+
+[IMPORTANT]
+====
+This environment is *REHEARSAL*. It produces no live TDX quote, key material,
+model response, latency result, or performance claim. The purpose is to build
+and prove the decision contract that a live confidential environment must later
+satisfy.
+====
+
+xref:00-mission.adoc[Start the Northstar mission →]

@@ -1,0 +1,49 @@
+= 0. Accept the Northstar mission
+
+== Show
+
+Northstar's claims assistant processes regulated customer data. The business
+owner wants confidential inference, the security owner requires fail-closed
+verification, and the platform owner must be able to operate and reclaim the
+environment without receiving authority to release protected resources.
+
+== Learn
+
+Sovereignty is a chain of accountable decisions, not a location checkbox.
+Hardware capability, workload identity, evidence appraisal, resource policy,
+inference authorization, and human approval must remain independently visible.
+
+== Do
+
+Create the qualification package you will complete throughout the lab.
+
+[source,bash,role="execute"]
+----
+export TRUST_URL=http://sovereign-ai-301:8080
+export NORTHSTAR_DIR="$HOME/northstar-sovereign-301"
+mkdir -p "$NORTHSTAR_DIR"
+cat > "$NORTHSTAR_DIR/decision-brief.md" <<'EOF'
+# Northstar sovereign inference qualification
+
+- Customer outcome: protect regulated claim data while it is processed
+- Data boundary: pending
+- Workload identity: pending
+- Evidence appraisal: pending
+- Protected resource: pending
+- Inference authority: not granted by this lab
+- Failure posture: pending
+- Human recommendation: pending
+- Source state: REHEARSAL
+EOF
+----
+
+[source,bash,role="execute"]
+----
+curl -fsS "$TRUST_URL/healthz" | tee "$NORTHSTAR_DIR/service-health.json" | python3 -m json.tool
+grep -E 'Customer outcome|Source state' "$NORTHSTAR_DIR/decision-brief.md"
+----
+
+== Prove
+
+The service reports `REHEARSAL`, and your decision brief states both the customer
+outcome and the evidence boundary before any qualification request is made.

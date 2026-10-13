@@ -27,6 +27,24 @@ assert d['modelInvoked'] is False
 print('PASS: zero model executions; resource and inference authority remain separate')
 PY
 ----
+[source,bash,role="execute"]
+----
+python3 - <<'PY'
+import json, os, pathlib
+d=json.load(open('/tmp/northstar-301-allowed.json'))
+policy={
+  'customer':'Northstar Claims',
+  'sourceState':d['sourceState'],
+  'resourcePolicy':d['resourcePolicy'],
+  'keyMaterialReleased':d['keyMaterialReleased'],
+  'inferenceAuthorization':d['inferenceAuthorization'],
+}
+path=pathlib.Path(os.environ['NORTHSTAR_DIR'])/'resource-policy.json'
+path.write_text(json.dumps(policy, indent=2)+'\n')
+print(path)
+PY
+sed -i 's|- Protected resource:.*|- Protected resource: one named policy target after successful appraisal; no inference permission|' "$NORTHSTAR_DIR/decision-brief.md"
+----
 
 == Prove
 The customer outcome remains protected inference, but this lab honestly proves

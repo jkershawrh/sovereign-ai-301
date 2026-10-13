@@ -1,0 +1,46 @@
+= 7. Prove cleanup without deleting the platform
+
+== Show
+
+Participant evidence, temporary credentials, and platform resources have
+different owners and lifecycles. Deleting a namespace from the terminal would
+bypass Launchpad's reclaim evidence.
+
+== Learn
+
+You keep the sanitized qualification package. You remove transient API output.
+Launchpad-owned resources include routes, workloads, policy, Showroom, and the
+namespace-level reclaim operation.
+
+== Do
+
+[source,bash,role="execute"]
+----
+rm -f /tmp/northstar-301-*.json
+test -z "$(find /tmp -maxdepth 1 -name 'northstar-301-*.json' -print -quit)"
+echo 'PASS: transient Northstar API files removed'
+----
+
+[source,bash,role="execute"]
+----
+test -s "$NORTHSTAR_DIR/decision-brief.md"
+test -s "$NORTHSTAR_DIR/appraisal-matrix.md"
+test -s "$NORTHSTAR_DIR/resource-policy.json"
+test -s "$NORTHSTAR_DIR/failure-matrix.md"
+test -s "$NORTHSTAR_DIR/evidence-manifest.json"
+test -s "$NORTHSTAR_DIR/SHA256SUMS"
+sha256sum --check "$NORTHSTAR_DIR/SHA256SUMS"
+printf '\nPortable qualification package:\n'
+find "$NORTHSTAR_DIR" -maxdepth 1 -type f -print | sort
+----
+
+== Prove
+
+The temporary API material is gone, the portable package is complete and
+verifiable, and the namespace remains available for Launchpad to reclaim. In
+the requester portal, reclaim the seat and verify that Launchpad reports zero
+remaining namespace, route, role binding, application, and secret residue.
+
+You can now explain what the trust chain proves, what it refuses, which human
+owns each boundary, and exactly what must be supplied before a live TDX claim is
+allowed.

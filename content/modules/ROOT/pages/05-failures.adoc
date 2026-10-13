@@ -22,6 +22,21 @@ done
 curl -fsS -X POST "$TRUST_URL/api/v1/qualify" -H 'content-type: application/json' \
   -d '{"scenario":"kbs_unavailable"}' | tee /tmp/northstar-301-kbs.json | python3 -m json.tool
 ----
+[source,bash,role="execute"]
+----
+cat > "$NORTHSTAR_DIR/failure-matrix.md" <<'EOF'
+# Northstar failure matrix
+
+| Failure | Required response | Human owner |
+|---|---|---|
+| Invalid measurement | Deny | Security owner |
+| Stale or replayed evidence | Deny | Identity owner |
+| Verifier unavailable | Offline / fail closed | Platform owner |
+| KBS unavailable | Offline / release nothing | Resource owner |
+| Non-TDX workload | Deny capability | Infrastructure owner |
+EOF
+sed -i 's|- Failure posture:.*|- Failure posture: deny invalid, stale, replayed, or non-TDX evidence; report unavailable dependencies as OFFLINE|' "$NORTHSTAR_DIR/decision-brief.md"
+----
 
 == Prove
 Only `allowed` produces a synthetic receipt. Every unsafe condition denies with

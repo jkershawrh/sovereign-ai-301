@@ -10,12 +10,16 @@ prove this workload ran there or matched an approved measurement.
 == Do
 [source,bash,role="execute"]
 ----
-export TRUST_URL=http://sovereign-ai-301:8080
 curl -fsS "$TRUST_URL/healthz" | python3 -m json.tool
 ----
 [source,bash,role="execute"]
 ----
 curl -fsS "$TRUST_URL/api/v1/scenarios" | tee /tmp/northstar-301-scenarios.json | python3 -m json.tool
+----
+[source,bash,role="execute"]
+----
+sed -i 's|- Data boundary:.*|- Data boundary: claim data in use requires an appraised workload identity; host capability alone is insufficient|' "$NORTHSTAR_DIR/decision-brief.md"
+grep 'Data boundary' "$NORTHSTAR_DIR/decision-brief.md"
 ----
 
 == Prove

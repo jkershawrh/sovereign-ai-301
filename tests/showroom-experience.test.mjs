@@ -3,7 +3,16 @@ import assert from 'node:assert/strict'
 import {readFile} from 'node:fs/promises'
 
 const root = 'showroom/content/modules/ROOT/pages'
-const pages = ['01-protection.adoc', '02-challenge.adoc', '03-appraise.adoc', '04-release.adoc', '05-failures.adoc', '06-handoff.adoc']
+const pages = [
+  '00-mission.adoc',
+  '01-protection.adoc',
+  '02-challenge.adoc',
+  '03-appraise.adoc',
+  '04-release.adoc',
+  '05-failures.adoc',
+  '06-handoff.adoc',
+  '07-cleanup.adoc',
+]
 
 test('301 continues Northstar from 201 and hands off to 401', async () => {
   const text = await readFile(`${root}/index.adoc`, 'utf8')
@@ -17,7 +26,20 @@ test('every 301 stage uses Show Learn Do Prove and executable actions', async ()
     for (const phase of ['Show', 'Learn', 'Do', 'Prove']) assert.match(text, new RegExp(`== ${phase}`), `${page} lacks ${phase}`)
     count += (text.match(/role="execute"/g) ?? []).length
   }
-  assert.ok(count >= 12, `expected at least 12 execute blocks, found ${count}`)
+  assert.ok(count >= 20, `expected at least 20 execute blocks, found ${count}`)
+})
+
+test('the learner authors and retains a portable qualification package', async () => {
+  const all = (await Promise.all(pages.map((p) => readFile(`${root}/${p}`, 'utf8')))).join('\n')
+  for (const artifact of [
+    'decision-brief.md',
+    'appraisal-matrix.md',
+    'resource-policy.json',
+    'failure-matrix.md',
+    'evidence-manifest.json',
+    'SHA256SUMS',
+  ]) assert.match(all, new RegExp(artifact.replace('.', '\\.')))
+  assert.match(all, /Portable qualification package/)
 })
 
 test('inference and cleanup claims remain honest', async () => {
