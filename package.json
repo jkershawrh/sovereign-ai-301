@@ -31,5 +31,8 @@
     "jsdom": "^29.1.1",
     "typescript": "~6.0.2",
     "vitest": "^4.1.8"
+  },
+  "overrides": {
+    "source-map-js": "1.2.2"
   }
 }
